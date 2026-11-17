@@ -1,0 +1,35 @@
+{
+    "name": "Pour Perfect",
+    "short_name": "Pour Perfect",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#C67C00",
+    "theme_color": "#F2A516",
+    "description": "Hold to pour, let go on the line. A one-tap pouring game.",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}
