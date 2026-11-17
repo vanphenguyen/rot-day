@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+  errors:
+    # Flutter 3.50 marks package:flutter/material.dart as deprecated in favour
+    # of package:material_ui. The generated l10n code still uses the old one,
+    # so the move waits until flutter gen-l10n does too.
+    deprecated_member_use: ignore
