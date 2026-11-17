@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Kept apart from colors.xml, which flutter_launcher_icons rewrites. -->
+<resources>
+    <!-- The app's amber, matching seedColor in lib/app.dart. -->
+    <color name="launch_background">#C67C00</color>
+</resources>
