@@ -8,3 +8,6 @@ build/
 .idea/
 *.iml
 .vscode/
+
+# Temporary logs from local checks
+*.log

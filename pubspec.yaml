@@ -2,7 +2,8 @@ name: rot_day
 description: "Rót Đầy - giữ để rót, thả tay đúng vạch."
 publish_to: 'none'
 
-version: 0.1.0+1
+# x.y.z+build. The build number must always grow for the stores.
+version: 1.0.0+1
 
 environment:
   sdk: ^3.10.0
@@ -19,8 +20,24 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
-  # Tạo code dịch từ lib/l10n/app_*.arb mỗi khi chạy `flutter pub get`.
+  # Builds the translation code from lib/l10n/app_*.arb on `flutter pub get`.
   generate: true
+
+# The app icon. Redraw the pictures with `python tool/make_icon.py`, then
+# run `dart run flutter_launcher_icons` to rebuild every platform's icons.
+flutter_launcher_icons:
+  image_path: assets/icon/icon.png
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#C67C00"
+  adaptive_icon_foreground: assets/icon/icon_foreground.png
+  web:
+    generate: true
+    image_path: assets/icon/icon.png
+    background_color: "#C67C00"
+    theme_color: "#F2A516"
