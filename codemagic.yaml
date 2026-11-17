@@ -1,0 +1,108 @@
+# Codemagic builds the iPhone app and uploads it to App Store Connect
+# (TestFlight). Start it by hand in Codemagic: Start new build > ios-release.
+# One-time setup in Codemagic and Apple is described in docs/APP_STORE.md.
+workflows:
+  # A trial build that needs no Apple account: it only checks that the
+  # iPhone app compiles. The result cannot be installed on a phone.
+  ios-check:
+    name: iOS - Build thử (không cần Apple)
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    environment:
+      flutter: 3.50.0
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get packages
+        script: flutter pub get
+      - name: Check and test
+        script: flutter analyze && flutter test
+      - name: Build the app without signing
+        script: flutter build ios --release --no-codesign
+    artifacts:
+      - /tmp/xcodebuild_logs/*.log
+
+  # Builds the app for the iPhone simulator (no Apple account needed), for
+  # Codemagic's in-browser app preview. Simulator builds are debug builds.
+  ios-simulator:
+    name: iOS - Bản cho máy ảo iPhone (xem thử)
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    environment:
+      flutter: 3.50.0
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get packages
+        script: flutter pub get
+      - name: Build for the simulator
+        script: flutter build ios --simulator --debug
+      - name: Show where the app was built
+        script: find build/ios -maxdepth 3 -name "*.app" -print || true
+    artifacts:
+      # Listed as a plain .app: Codemagic shows its Quick Launch (app
+      # preview) button only next to a .app or .apk artifact.
+      - build/ios/iphonesimulator/*.app
+
+  # Builds an APK to install on an Android phone for testing. It is signed
+  # with the debug key, so it is not for Google Play.
+  android-apk:
+    name: Android - APK để cài thử
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    environment:
+      flutter: 3.50.0
+      java: 17
+    scripts:
+      - name: Get packages
+        script: flutter pub get
+      - name: Check and test
+        script: flutter analyze && flutter test
+      - name: Build the APK
+        script: flutter build apk --release
+    artifacts:
+      - build/app/outputs/flutter-apk/app-release.apk
+
+  ios-release:
+    name: iOS - App Store
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      # The name given to the App Store Connect API key in Codemagic.
+      # The same key as MemoMate uses: one key covers every app on the
+      # account, so there is nothing new to create here.
+      app_store_connect: codemagic
+    environment:
+      flutter: 3.50.0
+      xcode: latest
+      cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.phenv.rotday
+    scripts:
+      - name: Get packages
+        script: flutter pub get
+      - name: Check and test
+        script: flutter analyze && flutter test
+      - name: Apply code signing
+        script: xcode-project use-profiles
+      - name: Build the app
+        script: |
+          # The build number is the UTC date and time (YYMMDDHHMM), so it
+          # always grows no matter which account or machine runs the build.
+          BUILD_NUMBER_NOW=$(date -u +%y%m%d%H%M)
+          echo "Build number: $BUILD_NUMBER_NOW"
+          flutter build ipa --release \
+            --build-number="$BUILD_NUMBER_NOW" \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Uploads the build; it appears under TestFlight in App Store Connect.
+        # Sending it for App Store review is done by hand on Apple's site.
+        submit_to_testflight: false
+        submit_to_app_store: false
