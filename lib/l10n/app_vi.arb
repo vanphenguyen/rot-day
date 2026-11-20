@@ -41,7 +41,7 @@
   "drinkSugarcane": "Nước mía",
   "drinkSmoothie": "Sinh tố",
   "drinkSoda": "Nước ngọt",
-  "drinkBeer": "Bia",
+  "drinkMilkTea": "Trà sữa kem",
 
   "shapeStraight": "Ly thẳng",
   "shapeFlared": "Ly loe",
@@ -115,10 +115,12 @@
   "howToTrailTitle": "Thả tay rồi nước vẫn chảy",
   "howToTrailBody": "Phần nước đang lơ lửng vẫn rơi xuống sau khi bạn thả tay, nên phải thả sớm hơn vạch một chút. Nước càng đặc thì rơi càng dai.",
   "howToFoamTitle": "Bọt sẽ thành nước",
-  "howToFoamBody": "Bia và nước ngọt nổi bọt, và khoảng một phần tư lớp bọt đó lắng xuống thành nước. Nước nào nhiều bọt thì phải nhắm thấp hơn.",
+  "howToFoamBody": "Trà sữa kem và nước ngọt nổi bọt, và khoảng một phần tư lớp bọt đó lắng xuống thành nước. Nước nào nhiều bọt thì phải nhắm thấp hơn.",
   "howToShapeTitle": "Hình ly đổi hết mọi thứ",
   "howToShapeBody": "Ly tròn thì mấy giọt đầu gần như không thấy gì, rồi mực nước vọt lên. Ly thắt thì khúc giữa đầy nhanh nhất. Nhìn ly trước khi rót.",
   "howToScoreTitle": "Cách tính",
+  "howToDrinks": "Sáu loại nước",
+  "howToShapes": "Sáu kiểu ly",
   "howToScoreBody": "Lệch dưới 1 mm là hoàn hảo, dưới 3 mm là rất khéo, dưới 7 mm là tạm được. Trào qua miệng ly là mất ly đó. Ở chế độ rót liên tục, mức cho phép hẹp dần theo từng ly.",
 
   "settingsTitle": "Cài đặt",

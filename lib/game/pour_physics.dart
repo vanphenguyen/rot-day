@@ -11,7 +11,8 @@ enum RoundOutcome { playing, finished, spilled }
 /// moment, and foam settles into a little more liquid. Both are what make
 /// the game hard: you have to let go before the line, not on it.
 class PourSim {
-  PourSim(this.level, {int wobbleSeed = 0}) : _wobblePhase = wobbleSeed % 1000 / 1000 * 6.283;
+  PourSim(this.level, {int wobbleSeed = 0})
+    : _wobblePhase = wobbleSeed % 1000 / 1000 * 6.283;
 
   final Level level;
 

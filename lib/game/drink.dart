@@ -54,14 +54,17 @@ enum Drink {
     emoji: '🥫',
     unlockAt: 8,
   ),
-  beer(
+
+  /// Milk tea with a thick cream top. Takes the last place, and the same
+  /// numbers, that beer had before release, so daily glasses are unchanged.
+  milkTea(
     foamPerHeight: 0.45,
     settleRate: 1.3,
     thickness: 1,
     highestLine: 0.76,
-    color: 0xFFF2A516,
-    foamColor: 0xFFFFF6DC,
-    emoji: '🍺',
+    color: 0xFFC8956B,
+    foamColor: 0xFFFFF4E0,
+    emoji: '🧋',
     unlockAt: 10,
   );
 
@@ -102,6 +105,8 @@ enum Drink {
   bool get hasFoam => foamPerHeight > 0;
 
   /// The drinks on offer after [glasses] filled in one endless run.
-  static List<Drink> unlockedAfter(int glasses) =>
-      [for (final d in values) if (d.unlockAt <= glasses) d];
+  static List<Drink> unlockedAfter(int glasses) => [
+    for (final d in values)
+      if (d.unlockAt <= glasses) d,
+  ];
 }

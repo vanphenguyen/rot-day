@@ -126,8 +126,14 @@ class ScoreStore {
     } else if (rate(errorMm) == Rating.perfect) {
       await _prefs.setInt(_perfectKey, perfectPours + 1);
     }
-    await _prefs.setStringList(_drinksKey, {...drinksPoured, drink.name}.toList());
-    await _prefs.setStringList(_shapesKey, {...shapesPoured, shape.name}.toList());
+    await _prefs.setStringList(
+      _drinksKey,
+      {...drinksPoured, drink.name}.toList(),
+    );
+    await _prefs.setStringList(
+      _shapesKey,
+      {...shapesPoured, shape.name}.toList(),
+    );
   }
 
   // ---- medals ----
@@ -192,11 +198,11 @@ class ScoreStore {
 
   /// Everything in one map, for the "what is saved" note in settings.
   String debugDump() => jsonEncode({
-        'poured': poured,
-        'perfect': perfectPours,
-        'spills': spills,
-        'bestRun': bestRun,
-        'bestPoints': bestPoints,
-        'medals': [for (final m in medals) m.name],
-      });
+    'poured': poured,
+    'perfect': perfectPours,
+    'spills': spills,
+    'bestRun': bestRun,
+    'bestPoints': bestPoints,
+    'medals': [for (final m in medals) m.name],
+  });
 }

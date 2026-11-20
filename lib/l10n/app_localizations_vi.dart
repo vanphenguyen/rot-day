@@ -103,7 +103,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get drinkSoda => 'Nước ngọt';
 
   @override
-  String get drinkBeer => 'Bia';
+  String get drinkMilkTea => 'Trà sữa kem';
 
   @override
   String get shapeStraight => 'Ly thẳng';
@@ -299,7 +299,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get howToFoamBody =>
-      'Bia và nước ngọt nổi bọt, và khoảng một phần tư lớp bọt đó lắng xuống thành nước. Nước nào nhiều bọt thì phải nhắm thấp hơn.';
+      'Trà sữa kem và nước ngọt nổi bọt, và khoảng một phần tư lớp bọt đó lắng xuống thành nước. Nước nào nhiều bọt thì phải nhắm thấp hơn.';
 
   @override
   String get howToShapeTitle => 'Hình ly đổi hết mọi thứ';
@@ -310,6 +310,12 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get howToScoreTitle => 'Cách tính';
+
+  @override
+  String get howToDrinks => 'Sáu loại nước';
+
+  @override
+  String get howToShapes => 'Sáu kiểu ly';
 
   @override
   String get howToScoreBody =>

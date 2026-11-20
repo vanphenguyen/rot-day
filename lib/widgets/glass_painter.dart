@@ -59,7 +59,10 @@ class GlassPainter extends CustomPainter {
   }
 
   /// The inside of the glass as a closed shape.
-  Path _glassPath(double Function(double, int) xAt, double Function(double) yAt) {
+  Path _glassPath(
+    double Function(double, int) xAt,
+    double Function(double) yAt,
+  ) {
     const steps = 40;
     final path = Path()..moveTo(xAt(0, -1), yAt(0));
     for (var i = 1; i <= steps; i++) {
@@ -168,7 +171,11 @@ class GlassPainter extends CustomPainter {
     // The spout, so the drink comes from something.
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromCenter(center: Offset(centre, glassTop * 0.34), width: 54, height: 16),
+        Rect.fromCenter(
+          center: Offset(centre, glassTop * 0.34),
+          width: 54,
+          height: 16,
+        ),
         const Radius.circular(8),
       ),
       Paint()..color = glassColor.withValues(alpha: 0.55),
@@ -199,7 +206,10 @@ class GlassPainter extends CustomPainter {
       final angle = -math.pi / 2 + (i - 2) * 0.42;
       final reach = 7 + 5 * sim.stream + math.sin(time * 11 + i) * 2;
       canvas.drawCircle(
-        Offset(centre + math.cos(angle) * reach * 1.6, surface + math.sin(angle) * reach * 0.5),
+        Offset(
+          centre + math.cos(angle) * reach * 1.6,
+          surface + math.sin(angle) * reach * 0.5,
+        ),
         1.6,
         splash,
       );
@@ -223,7 +233,11 @@ class GlassPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
     const dash = 9.0, gap = 6.0;
     for (var x = centre - reach; x < centre + reach; x += dash + gap) {
-      canvas.drawLine(Offset(x, y), Offset(math.min(x + dash, centre + reach), y), paint);
+      canvas.drawLine(
+        Offset(x, y),
+        Offset(math.min(x + dash, centre + reach), y),
+        paint,
+      );
     }
     // A small arrow on the right, so the line reads as a target.
     final tip = centre + reach + 3;

@@ -26,19 +26,32 @@ Future<(ScoreStore, SilentFeedback)> _freshStore() async {
   return (store, SilentFeedback(store));
 }
 
-Future<void> _start(WidgetTester tester, ScoreStore store, SilentFeedback fb) async {
-  await tester.pumpWidget(RotDayApp(
-    store: store,
-    feedback: fb,
-    locale: const Locale('vi'),
-    clock: () => _today,
-  ));
+Future<void> _start(
+  WidgetTester tester,
+  ScoreStore store,
+  SilentFeedback fb,
+) async {
+  // A phone-sized screen (393 x 852 points), not the 800 x 600 test default.
+  tester.view.physicalSize = const Size(1179, 2556);
+  tester.view.devicePixelRatio = 3;
+  addTearDown(tester.view.reset);
+  await tester.pumpWidget(
+    RotDayApp(
+      store: store,
+      feedback: fb,
+      locale: const Locale('vi'),
+      clock: () => _today,
+    ),
+  );
   await tester.pumpAndSettle();
 }
 
 /// Holds the pour area until the drink reaches [until] of the glass, then
 /// lets go and waits for it to settle.
-Future<void> _pourThenRelease(WidgetTester tester, {Duration hold = const Duration(milliseconds: 600)}) async {
+Future<void> _pourThenRelease(
+  WidgetTester tester, {
+  Duration hold = const Duration(milliseconds: 600),
+}) async {
   final gesture = await tester.startGesture(
     tester.getCenter(find.byKey(const Key('pour-area'))),
   );
@@ -109,7 +122,9 @@ void main() {
     expect(store.daily(_dayNumber), isNull);
   });
 
-  testWidgets('endless mode can be poured and offers the next glass', (tester) async {
+  testWidgets('endless mode can be poured and offers the next glass', (
+    tester,
+  ) async {
     final (store, fb) = await _freshStore();
     await _start(tester, store, fb);
 
@@ -141,13 +156,18 @@ void main() {
     final (store, fb) = await _freshStore();
     await _start(tester, store, fb);
 
+    await tester.ensureVisible(find.byKey(const Key('stats')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('stats')));
     await tester.pumpAndSettle();
 
     expect(find.text('Thành tích'), findsOneWidget);
     expect(find.text('Huy chương'), findsOneWidget);
     // Nothing poured yet, so the empty note shows.
-    expect(find.text('Rót một ly là thành tích hiện ra ở đây.'), findsOneWidget);
+    expect(
+      find.text('Rót một ly là thành tích hiện ra ở đây.'),
+      findsOneWidget,
+    );
     // None won yet. The list builds as it scrolls, so count the label
     // rather than the rows on screen.
     expect(find.text('Được 0 trên ${Medal.values.length}'), findsOneWidget);
@@ -177,7 +197,9 @@ void main() {
     final store = await ScoreStore.load();
     final fb = SilentFeedback(store);
     // No forced locale here: the app must follow what settings say.
-    await tester.pumpWidget(RotDayApp(store: store, feedback: fb, clock: () => _today));
+    await tester.pumpWidget(
+      RotDayApp(store: store, feedback: fb, clock: () => _today),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const Key('settings')));
@@ -189,7 +211,9 @@ void main() {
     expect(find.text('Settings'), findsOneWidget);
   });
 
-  testWidgets('the daily glass shown is the one everyone else gets', (tester) async {
+  testWidgets('the daily glass shown is the one everyone else gets', (
+    tester,
+  ) async {
     final (store, fb) = await _freshStore();
     await _start(tester, store, fb);
 
@@ -205,10 +229,10 @@ void main() {
       Drink.sugarcane: 'Nước mía',
       Drink.smoothie: 'Sinh tố',
       Drink.soda: 'Nước ngọt',
-      Drink.beer: 'Bia',
+      Drink.milkTea: 'Trà sữa kem',
     };
     expect(
-      find.text('${expected.emoji} ${names[expected]}'),
+      find.textContaining(names[expected]!, findRichText: true),
       findsOneWidget,
       reason: 'the glass of the day must be the one Level.daily picks',
     );

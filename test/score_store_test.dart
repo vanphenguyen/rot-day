@@ -68,21 +68,37 @@ void main() {
 
   test('pours are counted by kind', () async {
     final store = await freshStore();
-    await store.addPour(drink: Drink.beer, shape: GlassShape.tulip, errorMm: 0.4);
-    await store.addPour(drink: Drink.beer, shape: GlassShape.bowl, errorMm: null);
-    await store.addPour(drink: Drink.tea, shape: GlassShape.tulip, errorMm: 9.0);
+    await store.addPour(
+      drink: Drink.milkTea,
+      shape: GlassShape.tulip,
+      errorMm: 0.4,
+    );
+    await store.addPour(
+      drink: Drink.milkTea,
+      shape: GlassShape.bowl,
+      errorMm: null,
+    );
+    await store.addPour(
+      drink: Drink.tea,
+      shape: GlassShape.tulip,
+      errorMm: 9.0,
+    );
 
     expect(store.poured, 3);
     expect(store.perfectPours, 1);
     expect(store.spills, 1);
-    expect(store.drinksPoured, {'beer', 'tea'});
+    expect(store.drinksPoured, {'milkTea', 'tea'});
     expect(store.shapesPoured, {'tulip', 'bowl'});
   });
 
   group('medals', () {
     test('the first pour earns one, and only once', () async {
       final store = await freshStore();
-      await store.addPour(drink: Drink.tea, shape: GlassShape.straight, errorMm: 5);
+      await store.addPour(
+        drink: Drink.tea,
+        shape: GlassShape.straight,
+        errorMm: 5,
+      );
 
       expect(await store.awardMedals(), contains(Medal.firstPour));
       expect(store.medals, contains(Medal.firstPour));
@@ -93,7 +109,11 @@ void main() {
     test('three perfect pours earn both perfect medals', () async {
       final store = await freshStore();
       for (var i = 0; i < 3; i++) {
-        await store.addPour(drink: Drink.tea, shape: GlassShape.straight, errorMm: 0.2);
+        await store.addPour(
+          drink: Drink.tea,
+          shape: GlassShape.straight,
+          errorMm: 0.2,
+        );
       }
       final won = await store.awardMedals();
       expect(won, containsAll([Medal.firstPerfect, Medal.threePerfect]));
@@ -115,16 +135,19 @@ void main() {
       );
     });
 
-    test('pouring every drink and every shape earns the two collections', () async {
-      final store = await freshStore();
-      for (final drink in Drink.values) {
-        for (final shape in GlassShape.values) {
-          await store.addPour(drink: drink, shape: shape, errorMm: 4);
+    test(
+      'pouring every drink and every shape earns the two collections',
+      () async {
+        final store = await freshStore();
+        for (final drink in Drink.values) {
+          for (final shape in GlassShape.values) {
+            await store.addPour(drink: drink, shape: shape, errorMm: 4);
+          }
         }
-      }
-      final won = await store.awardMedals();
-      expect(won, containsAll([Medal.everyDrink, Medal.everyShape]));
-    });
+        final won = await store.awardMedals();
+        expect(won, containsAll([Medal.everyDrink, Medal.everyShape]));
+      },
+    );
 
     test('seven days running earns the week medal', () async {
       final store = await freshStore();
@@ -138,7 +161,10 @@ void main() {
       final store = await freshStore();
       await store.awardMedals(runGlasses: 20, bestStreakInRun: 5);
       final again = await ScoreStore.load();
-      expect(again.medals, containsAll([Medal.tenGlasses, Medal.twentyGlasses]));
+      expect(
+        again.medals,
+        containsAll([Medal.tenGlasses, Medal.twentyGlasses]),
+      );
     });
   });
 

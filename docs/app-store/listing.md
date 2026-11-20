@@ -21,7 +21,7 @@ Phần Description không được tính vào tìm kiếm; nó chỉ để thuy�
 |---|---|
 | Category | Primary: **Games > Casual**. Secondary: **Games > Puzzle** |
 | Price | Free |
-| Age Rating | Trả lời "None / No" cho mọi câu hỏi, kết quả sẽ là **4+** |
+| Age Rating | Trả lời "None / No" cho mọi câu hỏi, kết quả sẽ là **4+**. Game không có rượu bia, đừng thêm lại. |
 | App Privacy | **Data Not Collected** |
 | Support URL | `https://github.com/vanphenguyen/rot-day/issues` |
 | Marketing URL | để trống |
@@ -48,7 +48,7 @@ WHAT TO TRY
 6. The gear button has sound, vibration and language settings.
 
 CONTENT
-Six drinks (iced tea, coffee, sugarcane juice, smoothie, soda, beer), each with its own foam and trailing behaviour, and six glass shapes (tumbler, flared, tapered, tulip, hourglass, bowl), each of which changes how fast the level climbs. Drinks unlock as an endless run goes on.
+Six drinks (iced tea, coffee, sugarcane juice, smoothie, soda, cream milk tea), each with its own foam and trailing behaviour, and six glass shapes (tumbler, flared, tapered, tulip, hourglass, bowl), each of which changes how fast the level climbs. Drinks unlock as an endless run goes on.
 
 Everything is saved on the device only. Two languages: English and Vietnamese.
 ```
@@ -79,14 +79,14 @@ Hold to pour, let go on the line. Sounds easy until the stream keeps falling and
 Hold to pour. Let go on the line. That is the whole game, and you will still get it wrong.
 
 THE CATCH
-What is already in the air keeps falling after you lift your finger. On beer and soda, a head of foam builds up and about a quarter of it settles back into liquid. So the line is not where you let go. Working out where to let go is the game.
+What is already in the air keeps falling after you lift your finger. On soda and cream milk tea, a head of foam builds up and about a quarter of it settles back into liquid. So the line is not where you let go. Working out where to let go is the game.
 
 SIX DRINKS, EACH ITS OWN PROBLEM
 • Iced tea pours clean, no foam, no excuses
 • Coffee and sugarcane juice foam a little
 • Smoothie is thick and keeps trailing long after you let go
 • Soda foams hard and settles fast
-• Beer builds the biggest head of all
+• Cream milk tea carries the thickest head of all
 
 SIX GLASSES THAT LIE TO YOU
 A bowl hides the first splash, then the level races. An hourglass fills quickest through the waist. A tulip slows in the middle and sprints at the rim. Read the glass before you pour.
@@ -110,7 +110,7 @@ No account. No ads. No tracking. No purchases. Works on a plane, and everything 
 **Keywords** (tối đa 100 ký tự, cách nhau bằng dấu phẩy, không có dấu cách)
 
 ```
-pouring,timing,reflex,precision,beer,drink,bartender,one tap,skill,daily,arcade,glass,foam
+pouring,timing,reflex,precision,drink,barista,one tap,skill,daily,arcade,glass,foam,milk tea
 ```
 
 **What's New in This Version**
@@ -145,14 +145,14 @@ Giữ để rót, thả tay đúng vạch. Tưởng dễ, cho đến khi nước
 Giữ để rót. Thả tay đúng vạch. Game chỉ có thế, mà bạn vẫn sẽ rót sai.
 
 CÁI KHÓ Ở ĐÂY
-Phần nước đang lơ lửng vẫn rơi xuống sau khi bạn nhấc tay. Với bia và nước ngọt, lớp bọt nổi lên rồi khoảng một phần tư lắng xuống thành nước. Nên chỗ thả tay không phải là vạch. Tìm ra chỗ phải thả tay chính là cái game này.
+Phần nước đang lơ lửng vẫn rơi xuống sau khi bạn nhấc tay. Với nước ngọt và trà sữa kem, lớp bọt nổi lên rồi khoảng một phần tư lắng xuống thành nước. Nên chỗ thả tay không phải là vạch. Tìm ra chỗ phải thả tay chính là cái game này.
 
 SÁU LOẠI NƯỚC, MỖI LOẠI MỘT KIỂU KHÓ
 • Trà đá chảy sạch, không bọt, không có gì để bào chữa
 • Cà phê và nước mía nổi ít bọt
 • Sinh tố đặc, thả tay rồi vẫn còn chảy dai
 • Nước ngọt nổi bọt mạnh và lắng nhanh
-• Bia nổi bọt nhiều nhất
+• Trà sữa kem có lớp kem dày nhất
 
 SÁU KIỂU LY LỪA MẮT BẠN
 Ly tròn giấu mấy giọt đầu, rồi mực nước vọt lên. Ly thắt đầy nhanh nhất ở khúc giữa. Ly bầu chậm ở giữa rồi tăng tốc lúc gần miệng. Nhìn ly trước khi rót.
@@ -176,7 +176,7 @@ Không tài khoản. Không quảng cáo. Không theo dõi. Không bán gì thê
 **Keywords**
 
 ```
-rót nước,canh giờ,phản xạ,chính xác,bia,rot nuoc,canh gio,phan xa,game ngắn,một chạm,ly,bọt
+rót nước,canh giờ,phản xạ,chính xác,trà sữa,rot nuoc,canh gio,phan xa,game ngắn,một chạm,ly,bọt
 ```
 
 **What's New in This Version**
@@ -187,21 +187,24 @@ Phiên bản đầu tiên.
 
 ## Ảnh chụp màn hình
 
-**Chưa có, bạn phải tự chụp.** Apple bắt buộc có ảnh mới cho gửi duyệt.
+**Đã có sẵn**, cùng kiểu với các app trước (tiêu đề to ở trên, màn hình app nằm trong khung iPhone):
 
-Chụp 4 ảnh này từ bản TestFlight trên iPhone:
+- `docs/app-store/screenshots/1290x2796/vi/` và `/en/`: tải lên ô **iPhone 6.9"**.
+- `docs/app-store/screenshots/1206x2622/vi/` và `/en/`: dùng khi Apple hỏi cỡ **6.3"** (thường không cần).
 
-1. Màn hình chính, có ba chế độ chơi
-2. Lúc đang rót, thấy dòng nước và vạch kẻ
-3. Lúc vừa rót xong, thấy chữ "Hoàn hảo" và ngôi sao
-4. Màn hình Thành tích, thấy danh sách huy chương
+Mỗi ngôn ngữ 5 ảnh, tải theo đúng thứ tự số 1 đến 5. Ảnh tiếng Việt đặt ở trang Vietnamese, ảnh tiếng Anh ở trang English.
 
-Cỡ ảnh Apple yêu cầu cho iPhone: 1290x2796 hoặc 1206x2622. Chụp từ iPhone đời mới là đúng cỡ sẵn.
+Sửa giao diện xong thì làm lại ảnh bằng hai lệnh:
+
+```
+flutter test tool/screenshots_test.dart --update-goldens
+python tool/make_store_shots.py
+```
 
 ## TestFlight
 
 **Test Information > What to Test** (hiện cho người thử):
 
 ```
-Pour a few glasses in Keep pouring mode and see whether the difficulty feels right: the margin shrinks every glass and the stream starts to waver from the seventh. Try beer and smoothie, which both trail the most after you let go. Check that vibration and sound feel right, and that switching them off in Settings works.
+Pour a few glasses in Keep pouring mode and see whether the difficulty feels right: the margin shrinks every glass and the stream starts to waver from the seventh. Try cream milk tea and smoothie, which both trail the most after you let go. Check that vibration and sound feel right, and that switching them off in Settings works.
 ```

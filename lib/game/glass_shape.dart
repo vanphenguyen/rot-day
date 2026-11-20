@@ -15,13 +15,13 @@ enum GlassShape {
   /// Wide foot, narrow rim. Starts slow, ends fast.
   tapered,
 
-  /// Bulges in the middle like a tulip beer glass.
+  /// Bulges in the middle like a tulip.
   tulip,
 
   /// Pinched waist: quick, slow, quick.
   hourglass,
 
-  /// Rounded bottom like a brandy bowl. The hardest to read.
+  /// Rounded bottom like a round bowl. The hardest to read.
   bowl;
 
   /// How many slices the volume table uses. More slices, finer table.

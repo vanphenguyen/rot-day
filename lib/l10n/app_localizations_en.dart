@@ -103,7 +103,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get drinkSoda => 'Soda';
 
   @override
-  String get drinkBeer => 'Beer';
+  String get drinkMilkTea => 'Cream milk tea';
 
   @override
   String get shapeStraight => 'Tumbler';
@@ -248,7 +248,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get medalTenGlassesHow => 'Fill ten glasses in one run';
 
   @override
-  String get medalTwentyGlasses => 'Bartender';
+  String get medalTwentyGlasses => 'Barista';
 
   @override
   String get medalTwentyGlassesHow => 'Fill twenty glasses in one run';
@@ -299,7 +299,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get howToFoamBody =>
-      'Beer and soda build a head of foam, and about a quarter of it settles into liquid. Aim lower on a foamy drink.';
+      'Cream milk tea and soda build a head of foam, and about a quarter of it settles into liquid. Aim lower on a foamy drink.';
 
   @override
   String get howToShapeTitle => 'Shape changes everything';
@@ -310,6 +310,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get howToScoreTitle => 'Scoring';
+
+  @override
+  String get howToDrinks => 'Six drinks';
+
+  @override
+  String get howToShapes => 'Six glasses';
 
   @override
   String get howToScoreBody =>

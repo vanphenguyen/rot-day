@@ -47,7 +47,11 @@ void main() {
         var last = -1.0;
         for (var h = 0.0; h <= 1.0; h += 0.02) {
           final volume = shape.volumeBelow(h);
-          expect(volume, greaterThanOrEqualTo(last), reason: '${shape.name} at $h');
+          expect(
+            volume,
+            greaterThanOrEqualTo(last),
+            reason: '${shape.name} at $h',
+          );
           last = volume;
         }
       }
@@ -114,8 +118,14 @@ void main() {
     });
 
     test('later glasses pour faster', () {
-      final early = [for (var i = 0; i < 40; i++) Level.generate(Prng(i), difficulty: 0).flowRate];
-      final late = [for (var i = 0; i < 40; i++) Level.generate(Prng(i), difficulty: 12).flowRate];
+      final early = [
+        for (var i = 0; i < 40; i++)
+          Level.generate(Prng(i), difficulty: 0).flowRate,
+      ];
+      final late = [
+        for (var i = 0; i < 40; i++)
+          Level.generate(Prng(i), difficulty: 12).flowRate,
+      ];
       final earlyMean = early.reduce((a, b) => a + b) / early.length;
       final lateMean = late.reduce((a, b) => a + b) / late.length;
       expect(lateMean, greaterThan(earlyMean));
@@ -126,18 +136,20 @@ void main() {
       expect(dailyNumber(DateTime.utc(2026, 1, 2)), 2);
       expect(dailyNumber(DateTime.utc(2026, 12, 31)), 365);
       // The time of day must not matter.
-      expect(dailyNumber(DateTime.utc(2026, 3, 5, 23, 59)),
-          dailyNumber(DateTime.utc(2026, 3, 5, 0, 1)));
+      expect(
+        dailyNumber(DateTime.utc(2026, 3, 5, 23, 59)),
+        dailyNumber(DateTime.utc(2026, 3, 5, 0, 1)),
+      );
     });
   });
 
   group('PourSim', () {
     Level plain({double line = 0.6, Drink drink = Drink.tea}) => Level(
-          drink: drink,
-          shape: GlassShape.straight,
-          line: line,
-          flowRate: 0.3,
-        );
+      drink: drink,
+      shape: GlassShape.straight,
+      line: line,
+      flowRate: 0.3,
+    );
 
     test('nothing happens until the finger goes down', () {
       final sim = PourSim(plain());
@@ -149,12 +161,15 @@ void main() {
       expect(sim.outcome, RoundOutcome.playing);
     });
 
-    test('letting go exactly on the line overshoots, because the stream trails', () {
-      final sim = PourSim(plain());
-      expect(pourUntilDone(sim, releaseAt: 0.6), RoundOutcome.finished);
-      // This is the whole game: aiming at the line is already too late.
-      expect(sim.finalHeight, greaterThan(0.6));
-    });
+    test(
+      'letting go exactly on the line overshoots, because the stream trails',
+      () {
+        final sim = PourSim(plain());
+        expect(pourUntilDone(sim, releaseAt: 0.6), RoundOutcome.finished);
+        // This is the whole game: aiming at the line is already too late.
+        expect(sim.finalHeight, greaterThan(0.6));
+      },
+    );
 
     test('letting go early enough lands on the line', () {
       // There is some moment to let go that lands inside a millimetre.
@@ -224,8 +239,8 @@ void main() {
         expect(sim.foam, 0);
       });
 
-      test('beer builds a head while pouring', () {
-        final sim = PourSim(plain(drink: Drink.beer, line: 0.55));
+      test('cream milk tea builds a head while pouring', () {
+        final sim = PourSim(plain(drink: Drink.milkTea, line: 0.55));
         for (var i = 0; i < 60; i++) {
           sim.update(1 / 60, holding: true);
         }
@@ -233,7 +248,7 @@ void main() {
       });
 
       test('settled foam leaves more drink than was poured', () {
-        final sim = PourSim(plain(drink: Drink.beer, line: 0.55));
+        final sim = PourSim(plain(drink: Drink.milkTea, line: 0.55));
         pourUntilDone(sim, releaseAt: 0.4);
         // The glass settles higher than the liquid stood at the time.
         expect(sim.finalHeight, greaterThan(0.4));
@@ -247,7 +262,7 @@ void main() {
           return sim.finalHeight;
         }
 
-        expect(landedAt(Drink.beer), greaterThan(landedAt(Drink.tea)));
+        expect(landedAt(Drink.milkTea), greaterThan(landedAt(Drink.tea)));
       });
     });
 
@@ -286,18 +301,24 @@ void main() {
           final line = drink.highestLine - 0.05;
           var best = double.infinity;
           for (var release = line; release > 0.1; release -= 0.005) {
-            final sim = PourSim(Level(
-              drink: drink,
-              shape: shape,
-              line: line,
-              flowRate: Level.minFlowRate,
-            ));
-            if (pourUntilDone(sim, releaseAt: release) == RoundOutcome.finished) {
+            final sim = PourSim(
+              Level(
+                drink: drink,
+                shape: shape,
+                line: line,
+                flowRate: Level.minFlowRate,
+              ),
+            );
+            if (pourUntilDone(sim, releaseAt: release) ==
+                RoundOutcome.finished) {
               best = sim.errorMm < best ? sim.errorMm : best;
             }
           }
-          expect(best, lessThan(goodWithin),
-              reason: '${drink.name} in ${shape.name}');
+          expect(
+            best,
+            lessThan(goodWithin),
+            reason: '${drink.name} in ${shape.name}',
+          );
         }
       }
     });

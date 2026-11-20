@@ -56,8 +56,8 @@ enum Medal {
   fiveInARow('🔥'),
   tenGlasses('🏅'),
   twentyGlasses('🏆'),
-  everyDrink('🍹'),
-  everyShape('🥂'),
+  everyDrink('🧃'),
+  everyShape('🥤'),
   weekStreak('📅'),
   noSpillRun('🧼');
 

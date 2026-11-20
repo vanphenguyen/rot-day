@@ -4,6 +4,7 @@ import 'l10n/app_localizations.dart';
 import 'screens/home_screen.dart';
 import 'services/feedback.dart';
 import 'services/score_store.dart';
+import 'style/palette.dart';
 
 class RotDayApp extends StatefulWidget {
   const RotDayApp({
@@ -65,8 +66,9 @@ class _RotDayAppState extends State<RotDayApp> {
         }
         return const Locale('en');
       },
-      theme: _theme(Brightness.light),
-      darkTheme: _theme(Brightness.dark),
+      // One look, light only: a game's colours are part of its identity.
+      theme: _theme(),
+      themeMode: ThemeMode.light,
       home: HomeScreen(
         store: widget.store,
         feedback: _feedback,
@@ -77,23 +79,99 @@ class _RotDayAppState extends State<RotDayApp> {
     );
   }
 
-  ThemeData _theme(Brightness brightness) {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: RotDayApp.seedColor,
-      brightness: brightness,
+  /// Hand-picked colours and the bundled Nunito font, so the app does not
+  /// look like a stock Material template.
+  ThemeData _theme() {
+    const scheme = ColorScheme(
+      brightness: Brightness.light,
+      primary: Palette.amberDeep,
+      onPrimary: Colors.white,
+      primaryContainer: Palette.amber,
+      onPrimaryContainer: Palette.ink,
+      secondary: Palette.teal,
+      onSecondary: Colors.white,
+      error: Palette.tomato,
+      onError: Colors.white,
+      surface: Palette.cream,
+      onSurface: Palette.ink,
+      onSurfaceVariant: Palette.inkSoft,
+      surfaceContainerLowest: Palette.cream,
+      surfaceContainerLow: Palette.paper,
+      surfaceContainer: Palette.paper,
+      surfaceContainerHigh: Palette.sand,
+      surfaceContainerHighest: Palette.sand,
+      outline: Palette.sand,
+      outlineVariant: Palette.sand,
     );
-    return ThemeData(
-      colorScheme: scheme,
-      scaffoldBackgroundColor: scheme.surfaceContainerLowest,
-      appBarTheme: AppBarTheme(
-        backgroundColor: scheme.surfaceContainerLowest,
+    final base = ThemeData(colorScheme: scheme, fontFamily: 'Nunito');
+    final text = base.textTheme.apply(
+      bodyColor: Palette.ink,
+      displayColor: Palette.ink,
+    );
+    return base.copyWith(
+      scaffoldBackgroundColor: Palette.cream,
+      textTheme: text.copyWith(
+        headlineMedium: text.headlineMedium?.copyWith(
+          fontWeight: FontWeight.w900,
+        ),
+        titleLarge: text.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+        titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+        titleSmall: text.titleSmall?.copyWith(fontWeight: FontWeight.w800),
+        labelLarge: text.labelLarge?.copyWith(fontWeight: FontWeight.w700),
+        bodyLarge: text.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
+        bodyMedium: text.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+        bodySmall: text.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+      ),
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Palette.cream,
+        foregroundColor: Palette.ink,
         surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: TextStyle(
+          fontFamily: 'Nunito',
+          fontSize: 20,
+          fontWeight: FontWeight.w900,
+          color: Palette.ink,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 0,
         margin: EdgeInsets.zero,
-        color: scheme.surfaceContainerLow,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: Palette.paper,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: Palette.sand, width: 2),
+        ),
+      ),
+      dividerTheme: const DividerThemeData(color: Palette.sand, thickness: 1.5),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.all(Colors.white),
+        trackColor: WidgetStateProperty.resolveWith(
+          (s) =>
+              s.contains(WidgetState.selected) ? Palette.teal : Palette.locked,
+        ),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: WidgetStateProperty.resolveWith(
+          (s) =>
+              s.contains(WidgetState.selected) ? Palette.teal : Palette.inkSoft,
+        ),
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        backgroundColor: Palette.ink,
+        behavior: SnackBarBehavior.floating,
+        contentTextStyle: TextStyle(
+          fontFamily: 'Nunito',
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Palette.cream,
+        surfaceTintColor: Colors.transparent,
+        dragHandleColor: Palette.locked,
       ),
     );
   }

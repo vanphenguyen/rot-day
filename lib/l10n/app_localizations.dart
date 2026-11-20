@@ -266,11 +266,11 @@ abstract class AppLocalizations {
   /// **'Soda'**
   String get drinkSoda;
 
-  /// No description provided for @drinkBeer.
+  /// No description provided for @drinkMilkTea.
   ///
   /// In en, this message translates to:
-  /// **'Beer'**
-  String get drinkBeer;
+  /// **'Cream milk tea'**
+  String get drinkMilkTea;
 
   /// No description provided for @shapeStraight.
   ///
@@ -539,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @medalTwentyGlasses.
   ///
   /// In en, this message translates to:
-  /// **'Bartender'**
+  /// **'Barista'**
   String get medalTwentyGlasses;
 
   /// No description provided for @medalTwentyGlassesHow.
@@ -635,7 +635,7 @@ abstract class AppLocalizations {
   /// No description provided for @howToFoamBody.
   ///
   /// In en, this message translates to:
-  /// **'Beer and soda build a head of foam, and about a quarter of it settles into liquid. Aim lower on a foamy drink.'**
+  /// **'Cream milk tea and soda build a head of foam, and about a quarter of it settles into liquid. Aim lower on a foamy drink.'**
   String get howToFoamBody;
 
   /// No description provided for @howToShapeTitle.
@@ -655,6 +655,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scoring'**
   String get howToScoreTitle;
+
+  /// No description provided for @howToDrinks.
+  ///
+  /// In en, this message translates to:
+  /// **'Six drinks'**
+  String get howToDrinks;
+
+  /// No description provided for @howToShapes.
+  ///
+  /// In en, this message translates to:
+  /// **'Six glasses'**
+  String get howToShapes;
 
   /// No description provided for @howToScoreBody.
   ///

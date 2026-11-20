@@ -9,6 +9,8 @@ import '../game/scoring.dart';
 import '../l10n/app_localizations.dart';
 import '../services/feedback.dart';
 import '../services/score_store.dart';
+import '../style/game_art.dart';
+import '../style/palette.dart';
 import '../texts.dart';
 import '../widgets/glass_painter.dart';
 import '../widgets/medal_sheet.dart';
@@ -34,7 +36,12 @@ class PourScreen extends StatefulWidget {
     required this.feedback,
     required this.mode,
     this.dailyNumber,
+    this.fixedLevel,
   });
+
+  /// Pours this glass every time instead of a random one. Only for the
+  /// store screenshots, which need the same glass on every run.
+  final Level? fixedLevel;
 
   final ScoreStore store;
   final GameFeedback feedback;
@@ -93,7 +100,9 @@ class _PourScreenState extends State<PourScreen>
     super.dispose();
   }
 
-  Level _newLevel() => switch (widget.mode) {
+  Level _newLevel() =>
+      widget.fixedLevel ??
+      switch (widget.mode) {
         PourMode.daily => Level.daily(widget.dailyNumber!),
         PourMode.endless => Level.generate(_rng, difficulty: _glasses),
         // Practice stays at the gentlest setting on purpose.
@@ -102,9 +111,9 @@ class _PourScreenState extends State<PourScreen>
 
   /// How close this glass has to be, in millimetres.
   double get _allowance => switch (widget.mode) {
-        PourMode.endless => endlessTolerance(_glasses),
-        _ => goodWithin,
-      };
+    PourMode.endless => endlessTolerance(_glasses),
+    _ => goodWithin,
+  };
 
   void _onTick(Duration elapsed) {
     final dt = (elapsed - _lastTick).inMicroseconds / 1e6;
@@ -155,7 +164,9 @@ class _PourScreenState extends State<PourScreen>
 
     if (widget.mode == PourMode.daily) {
       await widget.store.saveDaily(widget.dailyNumber!, error);
-      await _award(dailyStreakNow: widget.store.dailyStreak(widget.dailyNumber!));
+      await _award(
+        dailyStreakNow: widget.store.dailyStreak(widget.dailyNumber!),
+      );
       return;
     }
 
@@ -231,11 +242,15 @@ class _PourScreenState extends State<PourScreen>
 
   Future<void> _copyResult() async {
     final t = AppLocalizations.of(context);
-    await Clipboard.setData(ClipboardData(
-      text: t.shareText(number: widget.dailyNumber!, errorMm: _errorMm),
-    ));
+    await Clipboard.setData(
+      ClipboardData(
+        text: t.shareText(number: widget.dailyNumber!, errorMm: _errorMm),
+      ),
+    );
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(t.copied)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(t.copied)));
   }
 
   @override
@@ -268,7 +283,8 @@ class _PourScreenState extends State<PourScreen>
         child: Column(
           children: [
             _Banner(
-              drink: '${level.drink.emoji} ${t.drinkName(level.drink)}',
+              level: level,
+              drink: t.drinkName(level.drink),
               shape: t.shapeName(level.shape),
               note: switch (widget.mode) {
                 PourMode.endless => t.toleranceNow(t.mm(_allowance)),
@@ -290,8 +306,8 @@ class _PourScreenState extends State<PourScreen>
                         painter: GlassPainter(
                           sim: _sim,
                           time: _time,
-                          glassColor: theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                          lineColor: theme.colorScheme.error,
+                          glassColor: Palette.ink,
+                          lineColor: Palette.tomato,
                         ),
                       ),
                     ),
@@ -304,9 +320,7 @@ class _PourScreenState extends State<PourScreen>
                 ),
               ),
             ),
-            _Footer(
-              child: _footerContent(t),
-            ),
+            _Footer(child: _footerContent(t)),
           ],
         ),
       ),
@@ -338,7 +352,9 @@ class _PourScreenState extends State<PourScreen>
         title: t.runOver,
         rating: _spilled ? Rating.spilled : rate(_errorMm),
         detail: '${t.runGlasses(_glasses)} · ${t.runPoints(_points)}',
-        note: _beatRecord ? t.newRecord : t.resultLine(_errorMm, short: _sim.short),
+        note: _beatRecord
+            ? t.newRecord
+            : t.resultLine(_errorMm, short: _sim.short),
         actions: [
           FilledButton.icon(
             onPressed: _restartRun,
@@ -378,7 +394,9 @@ class _PourScreenState extends State<PourScreen>
               key: const Key('next'),
               onPressed: _nextGlass,
               icon: const Icon(Icons.arrow_forward),
-              label: Text(widget.mode == PourMode.endless ? t.nextGlass : t.playAgain),
+              label: Text(
+                widget.mode == PourMode.endless ? t.nextGlass : t.playAgain,
+              ),
             ),
         ],
       );
@@ -394,12 +412,14 @@ class _PourScreenState extends State<PourScreen>
 /// The strip above the glass saying what is being poured into what.
 class _Banner extends StatelessWidget {
   const _Banner({
+    required this.level,
     required this.drink,
     required this.shape,
     required this.note,
     this.streak,
   });
 
+  final Level level;
   final String drink;
   final String shape;
   final String note;
@@ -409,30 +429,87 @@ class _Banner extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
       child: Column(
         children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(10, 6, 14, 6),
+            decoration: BoxDecoration(
+              color: Palette.paper,
+              borderRadius: BorderRadius.circular(40),
+              border: Border.all(color: Palette.sand, width: 2),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                DrinkGlass(drink: level.drink, shape: level.shape, size: 26),
+                const SizedBox(width: 8),
+                // Shrinks with an ellipsis rather than overflowing with
+                // large text.
+                Flexible(
+                  child: Text.rich(
+                    TextSpan(
+                      text: drink,
+                      children: [
+                        TextSpan(
+                          text: '  ·  $shape',
+                          style: TextStyle(color: Palette.inkSoft),
+                        ),
+                      ],
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 6),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(drink, style: theme.textTheme.titleMedium),
-              Text(' · $shape', style: theme.textTheme.titleMedium),
+              Flexible(
+                child: Text(
+                  note,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Palette.inkSoft,
+                  ),
+                ),
+              ),
               if (streak case final streak?) ...[
                 const SizedBox(width: 8),
-                Chip(
-                  label: Text('🔥 $streak'),
-                  visualDensity: VisualDensity.compact,
-                  padding: EdgeInsets.zero,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF2762C),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.local_fire_department_rounded,
+                        size: 14,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(width: 2),
+                      Text(
+                        streak,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ],
-          ),
-          const SizedBox(height: 2),
-          Text(
-            note,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
           ),
         ],
       ),
@@ -449,17 +526,26 @@ class _Hint extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.85),
-        borderRadius: BorderRadius.circular(24),
+        color: Palette.ink,
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.touch_app_outlined, size: 18),
+          const Icon(Icons.touch_app_rounded, size: 20, color: Colors.white),
           const SizedBox(width: 8),
-          Text(text, style: theme.textTheme.bodyMedium),
+          Flexible(
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
         ],
       ),
     );

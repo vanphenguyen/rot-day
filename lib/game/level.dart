@@ -26,7 +26,9 @@ class Level {
     final speedUp = 1 + 0.045 * math.min(difficulty, 12);
     final flow = rng.range(minFlowRate, maxBaseFlowRate) * speedUp;
     // From the 7th glass the stream starts to waver.
-    final wobble = difficulty < 6 ? 0.0 : math.min(0.18, 0.03 * (difficulty - 5));
+    final wobble = difficulty < 6
+        ? 0.0
+        : math.min(0.18, 0.03 * (difficulty - 5));
     return Level(
       drink: drink,
       shape: shape,
@@ -74,4 +76,9 @@ class Level {
 
 /// The number of the daily glass for [now]: #1 is 1 January 2026.
 int dailyNumber(DateTime now) =>
-    DateTime.utc(now.year, now.month, now.day).difference(DateTime.utc(2026)).inDays + 1;
+    DateTime.utc(
+      now.year,
+      now.month,
+      now.day,
+    ).difference(DateTime.utc(2026)).inDays +
+    1;

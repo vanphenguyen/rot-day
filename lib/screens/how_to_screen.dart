@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../game/drink.dart';
 import '../game/glass_shape.dart';
 import '../l10n/app_localizations.dart';
+import '../style/game_art.dart';
+import '../style/palette.dart';
 import '../texts.dart';
 
 /// How to play, and the quirks worth knowing: the stream trails, foam
@@ -17,69 +19,95 @@ class HowToScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(t.howToTitle)),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-        children: [
-          _Step(
-            icon: Icons.touch_app_outlined,
-            title: t.howToHoldTitle,
-            body: t.howToHoldBody,
-          ),
-          _Step(
-            icon: Icons.water_drop_outlined,
-            title: t.howToTrailTitle,
-            body: t.howToTrailBody,
-          ),
-          _Step(
-            icon: Icons.bubble_chart_outlined,
-            title: t.howToFoamTitle,
-            body: t.howToFoamBody,
-          ),
-          _Step(
-            icon: Icons.local_bar_outlined,
-            title: t.howToShapeTitle,
-            body: t.howToShapeBody,
-          ),
-          _Step(
-            icon: Icons.emoji_events_outlined,
-            title: t.howToScoreTitle,
-            body: t.howToScoreBody,
-          ),
-          const SizedBox(height: 8),
-          Text(t.statsDrinks, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 560),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
             children: [
-              for (final drink in Drink.values)
-                Chip(
-                  avatar: Text(drink.emoji),
-                  label: Text(t.drinkName(drink)),
-                ),
+              _Step(
+                number: 1,
+                icon: Icons.touch_app_rounded,
+                colour: Palette.amberDeep,
+                title: t.howToHoldTitle,
+                body: t.howToHoldBody,
+              ),
+              _Step(
+                number: 2,
+                icon: Icons.water_drop_rounded,
+                colour: Palette.sky,
+                title: t.howToTrailTitle,
+                body: t.howToTrailBody,
+              ),
+              _Step(
+                number: 3,
+                icon: Icons.bubble_chart_rounded,
+                colour: Palette.teal,
+                title: t.howToFoamTitle,
+                body: t.howToFoamBody,
+              ),
+              _Step(
+                number: 4,
+                icon: Icons.local_drink_rounded,
+                colour: const Color(0xFF7A6BD1),
+                title: t.howToShapeTitle,
+                body: t.howToShapeBody,
+              ),
+              _Step(
+                number: 5,
+                icon: Icons.star_rounded,
+                colour: Palette.gold,
+                title: t.howToScoreTitle,
+                body: t.howToScoreBody,
+              ),
+              const SizedBox(height: 12),
+              Text(t.howToDrinks, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 14,
+                children: [
+                  for (final drink in Drink.values)
+                    _Tile(
+                      picture: DrinkGlass(drink: drink, size: 40),
+                      label: t.drinkName(drink),
+                    ),
+                ],
+              ),
+              const SizedBox(height: 22),
+              Text(t.howToShapes, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 10,
+                runSpacing: 14,
+                children: [
+                  for (final shape in GlassShape.values)
+                    _Tile(
+                      picture: DrinkGlass(drink: null, shape: shape, size: 40),
+                      label: t.shapeName(shape),
+                    ),
+                ],
+              ),
             ],
           ),
-          const SizedBox(height: 20),
-          Text(t.statsShapes, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 8),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final shape in GlassShape.values)
-                Chip(label: Text(t.shapeName(shape))),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }
 }
 
 class _Step extends StatelessWidget {
-  const _Step({required this.icon, required this.title, required this.body});
+  const _Step({
+    required this.number,
+    required this.icon,
+    required this.colour,
+    required this.title,
+    required this.body,
+  });
 
+  final int number;
   final IconData icon;
+  final Color colour;
   final String title;
   final String body;
 
@@ -89,24 +117,70 @@ class _Step extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: theme.colorScheme.primary),
-            const SizedBox(width: 16),
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: colour,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Icon(icon, color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: theme.textTheme.titleMedium),
                   const SizedBox(height: 4),
-                  Text(body, style: theme.textTheme.bodyMedium),
+                  Text(
+                    body,
+                    style: theme.textTheme.bodyMedium?.copyWith(height: 1.35),
+                  ),
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// A drink or a glass shape: the picture over its name.
+class _Tile extends StatelessWidget {
+  const _Tile({required this.picture, required this.label});
+
+  final Widget picture;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 104,
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+      decoration: BoxDecoration(
+        color: Palette.paper,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: Palette.sand, width: 2),
+      ),
+      child: Column(
+        children: [
+          picture,
+          const SizedBox(height: 6),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w800),
+          ),
+        ],
       ),
     );
   }

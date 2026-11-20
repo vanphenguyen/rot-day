@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../game/scoring.dart';
 import '../l10n/app_localizations.dart';
+import '../style/game_art.dart';
+import '../style/palette.dart';
 import '../texts.dart';
 
 /// Announces medals that were just won, from the bottom of the screen.
@@ -35,17 +37,20 @@ class MedalSheet extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Row(
                   children: [
-                    Text(medal.emoji, style: const TextStyle(fontSize: 32)),
+                    MedalBadge(medal: medal, size: 52),
                     const SizedBox(width: 16),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(t.medalName(medal), style: theme.textTheme.titleMedium),
+                          Text(
+                            t.medalName(medal),
+                            style: theme.textTheme.titleMedium,
+                          ),
                           Text(
                             t.medalHow(medal),
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
+                              color: Palette.inkSoft,
                             ),
                           ),
                         ],
