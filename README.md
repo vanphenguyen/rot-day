@@ -10,7 +10,7 @@ Mã app: `com.phenv.rotday`
 Thả tay đúng vạch là đã muộn. Hai lý do:
 
 - Phần nước đang lơ lửng vẫn rơi xuống sau khi thả tay. Nước càng đặc càng rơi dai (sinh tố dai nhất).
-- Bia và nước ngọt nổi bọt, và khoảng một phần tư lớp bọt lắng xuống thành nước.
+- Nước ngọt và trà sữa kem nổi bọt, và khoảng một phần tư lớp bọt lắng xuống thành nước.
 
 Thêm vào đó, sáu kiểu ly làm mực nước dâng nhanh chậm khác nhau ở từng đoạn, nên cùng một lượng nước mà
 mỗi ly lại nhìn khác.

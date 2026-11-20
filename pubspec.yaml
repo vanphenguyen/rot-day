@@ -24,6 +24,21 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Nunito, bundled so the app never fetches anything. It has every
+  # Vietnamese letter. Licence: assets/fonts/OFL.txt.
+  fonts:
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-400.ttf
+          weight: 400
+        - asset: assets/fonts/Nunito-600.ttf
+          weight: 600
+        - asset: assets/fonts/Nunito-700.ttf
+          weight: 700
+        - asset: assets/fonts/Nunito-800.ttf
+          weight: 800
+        - asset: assets/fonts/Nunito-900.ttf
+          weight: 900
   # Builds the translation code from lib/l10n/app_*.arb on `flutter pub get`.
   generate: true
 

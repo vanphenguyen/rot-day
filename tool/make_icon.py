@@ -24,7 +24,10 @@ OUT = ROOT / "assets" / "icon"
 # The app's colours, matching lib/app.dart.
 AMBER = (242, 165, 22, 255)
 AMBER_DARK = (198, 124, 0, 255)
-FOAM = (255, 246, 220, 255)
+# The drink is milk tea, not beer: amber liquid under a white head would
+# read as beer and push the age rating up.
+MILK_TEA = (200, 149, 107, 255)
+FOAM = (255, 244, 224, 255)
 LINE = (227, 70, 70, 255)
 GLASS = (255, 255, 255, 255)
 
@@ -60,7 +63,7 @@ def draw_glass(
         return left + right[::-1]
 
     # Liquid, with a band of foam on top.
-    d.polygon(band(0, fill_to), fill=AMBER)
+    d.polygon(band(0, fill_to), fill=MILK_TEA)
     d.polygon(band(fill_to, min(1.0, fill_to + 0.07)), fill=FOAM)
 
     # Outline: up one side, across the foot, down the other.

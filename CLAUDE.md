@@ -71,8 +71,7 @@ Chi tiết và bảng theo dõi ở `docs/APP_STORE.md`, mục "Rủi ro bị t�
 
 - **Chưa chơi thử trên máy thật.** Các con số về bọt, độ đặc, tốc độ rót mới là ước lượng. Phần cần chỉnh
   liệt kê ở cuối `README.md`.
-- **Chưa có ảnh chụp màn hình cho App Store.** Apple bắt buộc có. Chủ dự án phải tự chụp từ bản TestFlight,
-  hướng dẫn ở `docs/app-store/listing.md`.
+- Ảnh App Store làm tự động: `tool/screenshots_test.dart` rồi `tool/make_store_shots.py` (xem `docs/app-store/listing.md`).
 - **Chưa có âm thanh riêng.** Hiện dùng tiếng tách của hệ thống (`SystemSound`), nên app không mang file nhạc nào.
   Muốn có tiếng nước chảy thật thì phải thêm gói phát âm thanh và file âm thanh.
 - **Chưa kiểm tra tên "Rót Đầy" và "Pour Perfect" có bị trùng trên store hay chưa.**
@@ -87,3 +86,9 @@ Project tham khảo là MemoMate (app Nhớ Nhé, `com.phenv.nhonhe`). Lấy l�
 
 Tài khoản Apple, khóa API `codemagic` và chứng chỉ Apple Distribution **dùng chung với MemoMate**.
 Mã app, provisioning profile và app trên App Store Connect thì phải tạo mới cho `com.phenv.rotday`.
+
+
+## Độ tuổi 4+: không có rượu bia
+
+Chủ dự án muốn độ tuổi thấp nhất. Không thêm bia, rượu, cocktail (chữ, emoji hay hình) vào app hay trang store.
+Nước cuối trong `enum Drink` là `milkTea` (trước là `beer`, giữ nguyên thông số để ly hôm nay không đổi).
