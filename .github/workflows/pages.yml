@@ -1,0 +1,62 @@
+# Builds the web version of the app and publishes it to GitHub Pages.
+# Runs on every push to main (and can be started by hand from the Actions tab).
+# One-time setup: Settings > Pages > Build and deployment > Source: "GitHub Actions".
+# The site then lives at https://vanphenguyen.github.io/rot-day/
+
+name: Web - GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# Pages needs permission to publish, and only one deployment runs at a time.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same Flutter version as the App Store and APK builds (see codemagic.yaml, .metadata).
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.50.0
+          cache: true
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: Check and test
+        run: |
+          flutter analyze
+          flutter test
+
+      # The site is served from /rot-day/, so the base path must match.
+      - name: Build the web app
+        run: flutter build web --release --base-href "/rot-day/"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
