@@ -306,7 +306,6 @@ class _PourScreenState extends State<PourScreen>
                         painter: GlassPainter(
                           sim: _sim,
                           time: _time,
-                          glassColor: Palette.ink,
                           lineColor: Palette.tomato,
                         ),
                       ),

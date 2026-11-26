@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../game/drink.dart';
 import '../game/glass_shape.dart';
 import '../game/scoring.dart';
+import '../widgets/glass_painter.dart';
 import 'palette.dart';
 
 /// The game's own pictures, drawn in code, used instead of emoji.
@@ -217,53 +218,19 @@ class _GlassIconPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final top = size.height * 0.1;
-    final bottom = size.height * 0.92;
-    final height = bottom - top;
-    final half = size.width * 0.34;
-    final cx = size.width / 2;
-    double x(double h, int side) => cx + side * shape.widthAt(h) * half;
-    double y(double h) => bottom - h * height;
-
-    Path band(double low, double high) {
-      final p = Path()..moveTo(x(low, -1), y(low));
-      for (var i = 1; i <= 16; i++) {
-        final h = low + (high - low) * i / 16;
-        p.lineTo(x(h, -1), y(h));
-      }
-      for (var i = 16; i >= 0; i--) {
-        final h = low + (high - low) * i / 16;
-        p.lineTo(x(h, 1), y(h));
-      }
-      return p..close();
-    }
-
-    if (drink case final d?) {
-      canvas.drawPath(band(0, fill), Paint()..color = Color(d.color));
-      if (d.hasFoam) {
-        final foamTop = math.min(1.0, fill + 0.08 + d.foamPerHeight * 0.25);
-        canvas.drawPath(
-          band(fill, foamTop),
-          Paint()..color = Color(d.foamColor),
-        );
-      }
-    }
-    final outlinePath = Path()..moveTo(x(1, -1), y(1));
-    for (var i = 15; i >= 0; i--) {
-      outlinePath.lineTo(x(i / 16, -1), y(i / 16));
-    }
-    for (var i = 0; i <= 16; i++) {
-      outlinePath.lineTo(x(i / 16, 1), y(i / 16));
-    }
-    canvas.drawPath(
-      outlinePath,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = math.max(1.5, size.width * 0.07)
-        ..strokeJoin = StrokeJoin.round
-        ..strokeCap = StrokeCap.round
-        ..color = outline,
-    );
+    final d = drink;
+    GlassArt(
+      shape: shape,
+      drink: d,
+      liquid: d == null ? 0 : fill,
+      foam: d != null && d.hasFoam
+          ? math.min(1 - fill, 0.08 + d.foamPerHeight * 0.25)
+          : 0,
+      spout: false,
+      rimAt: 0.1,
+      floorAt: 0.84,
+      widthScale: 0.5,
+    ).paint(canvas, size);
   }
 
   @override

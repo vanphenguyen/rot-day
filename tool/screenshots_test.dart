@@ -4,6 +4,7 @@
 // Not part of the normal test run. Run it with:
 //
 //   flutter test tool/screenshots_test.dart --update-goldens
+//   flutter test tool/screenshots_test.dart --update-goldens --dart-define=DEVICE=ipad
 //
 // The pictures land in tool/screenshots/raw/. Then run
 // `python tool/make_store_shots.py` to put them in an iPhone frame.
@@ -24,6 +25,10 @@ import 'package:rot_day/services/score_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final _today = DateTime.utc(2026, 11, 20);
+
+/// Which screen to draw for: 'phone' (default) or 'ipad'. Set it with
+/// --dart-define=DEVICE=ipad.
+const _device = String.fromEnvironment('DEVICE', defaultValue: 'phone');
 const _frame = Duration(milliseconds: 16);
 
 /// The glasses shown in the pictures: foamy milk tea in a tulip glass,
@@ -123,15 +128,28 @@ void main() {
     bool played = false,
     Future<void> Function()? then,
   }) async {
-    // An iPhone 15/16 Pro screen: 393 x 852 points, with the notch and
-    // home bar areas the real phone keeps clear.
-    tester.view.physicalSize = const Size(1179, 2556);
-    tester.view.devicePixelRatio = 3;
-    tester.view.padding = const FakeViewPadding(top: 59 * 3, bottom: 34 * 3);
-    tester.view.viewPadding = const FakeViewPadding(
-      top: 59 * 3,
-      bottom: 34 * 3,
-    );
+    final ipad = _device == 'ipad';
+    if (ipad) {
+      // A 13-inch iPad Pro screen: 1032 x 1376 points at 2x, which is the
+      // 2064 x 2752 size App Store Connect asks for.
+      tester.view.physicalSize = const Size(2064, 2752);
+      tester.view.devicePixelRatio = 2;
+      tester.view.padding = const FakeViewPadding(top: 24 * 2, bottom: 20 * 2);
+      tester.view.viewPadding = const FakeViewPadding(
+        top: 24 * 2,
+        bottom: 20 * 2,
+      );
+    } else {
+      // An iPhone 15/16 Pro screen: 393 x 852 points, with the notch and
+      // home bar areas the real phone keeps clear.
+      tester.view.physicalSize = const Size(1179, 2556);
+      tester.view.devicePixelRatio = 3;
+      tester.view.padding = const FakeViewPadding(top: 59 * 3, bottom: 34 * 3);
+      tester.view.viewPadding = const FakeViewPadding(
+        top: 59 * 3,
+        bottom: 34 * 3,
+      );
+    }
     addTearDown(tester.view.reset);
     final s = await store(played: played);
     await tester.pumpWidget(
@@ -146,7 +164,11 @@ void main() {
     if (then != null) await then();
     await expectLater(
       find.byType(RotDayApp),
-      matchesGoldenFile('screenshots/raw/$lang-$name.png'),
+      matchesGoldenFile(
+        ipad
+            ? 'screenshots/raw/ipad-$lang-$name.png'
+            : 'screenshots/raw/$lang-$name.png',
+      ),
     );
   }
 

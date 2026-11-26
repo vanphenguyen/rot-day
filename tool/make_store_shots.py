@@ -154,6 +154,77 @@ def compose(screen: Image.Image, headline: str, W: int, H: int) -> Image.Image:
     return canvas.convert('RGB')
 
 
+IPAD = (2064, 2752)          # the 13" iPad size App Store Connect asks for
+
+
+def ipad_status_bar(shot: Image.Image) -> Image.Image:
+    """Time on the left, Wi-Fi and battery on the right, in the 24pt strip
+    the app leaves empty at the top of an iPad screen (2 px per point)."""
+    shot = shot.copy()
+    d = ImageDraw.Draw(shot)
+    cy = 24
+    d.text((48, cy), '9:41', font=ImageFont.truetype(STATUS_FONT, 30), fill=INK, anchor='lm')
+    w = shot.width
+    bx = w - 48 - 50
+    d.rounded_rectangle([bx, cy - 11, bx + 46, cy + 11], 6, outline=INK, width=3)
+    d.rounded_rectangle([bx + 5, cy - 6, bx + 41, cy + 6], 3, fill=INK)
+    d.rounded_rectangle([bx + 49, cy - 4, bx + 53, cy + 4], 2, fill=INK)
+    wx, wy = bx - 34, cy + 10
+    for r in (24, 16, 8):
+        d.arc([wx - r, wy - r, wx + r, wy + r], 225, 315, fill=INK, width=5)
+    d.ellipse([wx - 4, wy - 7, wx + 4, wy + 1], fill=INK)
+    return shot
+
+
+def compose_ipad(screen: Image.Image, headline: str) -> Image.Image:
+    W, H = IPAD
+    canvas = gradient(W, H)
+
+    scr_w = 1600
+    scr_h = round(screen.height * scr_w / screen.width)
+    screen = screen.resize((scr_w, scr_h), Image.LANCZOS)
+    bezel = 40
+    ph_w, ph_h = scr_w + 2 * bezel, scr_h + 2 * bezel
+    ph_x = (W - ph_w) // 2
+    ph_y = H - ph_h - 110
+    r_out, r_in = 96, 60
+
+    lines = headline.split('\n')
+    font = fit_font(lines, W - 300, 150)
+    line_h = round(font.size * 1.22)
+    y = (ph_y - line_h * len(lines)) // 2 + 16
+    d = ImageDraw.Draw(canvas)
+    for line in lines:
+        d.text((W // 2, y), line, font=font, fill=INK, anchor='mt')
+        y += line_h
+
+    shadow = Image.new('L', (W, H), 0)
+    ImageDraw.Draw(shadow).rounded_rectangle(
+        [ph_x + 24, ph_y + 50, ph_x + ph_w + 24, ph_y + ph_h + 50], r_out, fill=110)
+    shadow = shadow.filter(ImageFilter.GaussianBlur(50))
+    canvas = Image.composite(Image.new('RGB', (W, H), SHADOW), canvas, shadow)
+    d = ImageDraw.Draw(canvas)
+
+    # Top button and volume buttons, metal edge, black bezel.
+    btn = (30, 30, 32)
+    d.rounded_rectangle([ph_x + ph_w - 260, ph_y - 10, ph_x + ph_w - 140, ph_y + 4], 5, fill=btn)
+    for top, bot in ((180, 300), (330, 450)):
+        d.rounded_rectangle([ph_x + ph_w - 4, ph_y + top, ph_x + ph_w + 10, ph_y + bot], 5, fill=btn)
+    d.rounded_rectangle([ph_x - 4, ph_y - 4, ph_x + ph_w + 4, ph_y + ph_h + 4], r_out + 4, fill=(88, 86, 84))
+    d.rounded_rectangle([ph_x, ph_y, ph_x + ph_w, ph_y + ph_h], r_out, fill=(18, 18, 20))
+
+    mask = Image.new('L', screen.size, 0)
+    ImageDraw.Draw(mask).rounded_rectangle([0, 0, scr_w - 1, scr_h - 1], r_in, fill=255)
+    canvas.paste(screen, (ph_x + bezel, ph_y + bezel), mask)
+    d = ImageDraw.Draw(canvas)
+
+    # Front camera in the top bezel, and the home indicator.
+    d.ellipse([W // 2 - 8, ph_y + bezel // 2 - 8, W // 2 + 8, ph_y + bezel // 2 + 8], fill=(45, 45, 52))
+    hy = ph_y + bezel + scr_h - 16
+    d.rounded_rectangle([W // 2 - 180, hy - 9, W // 2 + 180, hy], 5, fill=INK)
+    return canvas.convert('RGB')
+
+
 def main() -> None:
     made = 0
     for lang, heads in HEADLINES.items():
@@ -175,7 +246,32 @@ def main() -> None:
                 made += 1
     print('made', made, 'images in', OUT)
 
+    # iPad: the same five screens and headlines, in an iPad frame.
+    for lang, heads in HEADLINES.items():
+        folder = OUT / f'{IPAD[0]}x{IPAD[1]}' / lang
+        folder.mkdir(parents=True, exist_ok=True)
+        for old in glob.glob(str(folder / '*.png')):
+            os.remove(old)
+        for n, (name, head) in enumerate(zip(SHOTS, heads), start=1):
+            path = RAW / f'ipad-{lang}-{name}.png'
+            if not path.exists():
+                raise SystemExit(f'missing {path}: run screenshots_test.dart with --dart-define=DEVICE=ipad')
+            screen = ipad_status_bar(Image.open(path).convert('RGB'))
+            img = compose_ipad(screen, head)
+            assert img.size == IPAD and img.mode == 'RGB'
+            img.save(folder / f'{n}.png', optimize=True)
+            made += 1
+    print('with iPad:', made, 'images')
+
     # A contact sheet per language, for a quick look.
+    for lang in HEADLINES:
+        n = len(SHOTS)
+        sheet = Image.new('RGB', (n * 516 + (n + 1) * 20, 688 + 40), (255, 255, 255))
+        for i in range(n):
+            im = Image.open(OUT / f'{IPAD[0]}x{IPAD[1]}' / lang / f'{i + 1}.png')
+            sheet.paste(im.resize((516, 688), Image.LANCZOS), (20 + i * 536, 20))
+        sheet.save(ROOT / 'tool' / 'screenshots' / f'sheet_ipad_{lang}.png')
+
     for lang in HEADLINES:
         n = len(SHOTS)
         sheet = Image.new('RGB', (n * 402 + (n + 1) * 20, 874 + 40), (255, 255, 255))
