@@ -191,13 +191,18 @@ Phiên bản đầu tiên.
 
 - `docs/app-store/screenshots/1290x2796/vi/` và `/en/`: tải lên ô **iPhone 6.9"**.
 - `docs/app-store/screenshots/1206x2622/vi/` và `/en/`: dùng khi Apple hỏi cỡ **6.3"** (thường không cần).
+- `docs/app-store/screenshots/2064x2752/vi/` và `/en/`: tải lên ô **iPad 13"**. Ô này **bắt buộc**, vì app chạy được cả trên iPad.
 
 Mỗi ngôn ngữ 5 ảnh, tải theo đúng thứ tự số 1 đến 5. Ảnh tiếng Việt đặt ở trang Vietnamese, ảnh tiếng Anh ở trang English.
+
+Bộ ảnh hiện tại (làm ngày 26/11/2026) đã có ly thủy tinh vẽ lại và ca inox. Nếu trước đó đã tải ảnh cũ lên
+App Store Connect thì xóa ảnh cũ ở từng ô rồi tải bộ này lên.
 
 Sửa giao diện xong thì làm lại ảnh bằng hai lệnh:
 
 ```
 flutter test tool/screenshots_test.dart --update-goldens
+flutter test tool/screenshots_test.dart --update-goldens --dart-define=DEVICE=ipad
 python tool/make_store_shots.py
 ```
 
