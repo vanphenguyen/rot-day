@@ -115,4 +115,4 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
 /// Kept in step with `version` in pubspec.yaml by hand. Reading it from the
 /// bundle would mean another package for one line of text.
-const appVersion = '1.0.0';
+const appVersion = '1.0.1';

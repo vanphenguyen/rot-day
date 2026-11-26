@@ -36,6 +36,9 @@ từ chối theo điều 4.2.
 ```
 Pour Perfect is an offline skill game. No account, no sign-in, no in-app purchases, no internet connection.
 
+WHAT CHANGED IN 1.0.1
+A visual update only. The glasses, drinks and pouring jug are redrawn, and the app icon is new. The rules, the modes and the saved data are unchanged.
+
 HOW TO PLAY
 Hold anywhere on the screen to pour, and let go when the drink reaches the dashed line. You get one hold per glass. The catch is that the stream keeps falling after you let go, and on foamy drinks part of the foam settles into liquid, so letting go exactly on the line is already too late.
 
@@ -113,10 +116,15 @@ No account. No ads. No tracking. No purchases. Works on a plane, and everything 
 pouring,timing,reflex,precision,drink,barista,one tap,skill,daily,arcade,glass,foam,milk tea
 ```
 
-**What's New in This Version**
+**What's New in This Version** (bản 1.0.1)
 
 ```
-First release.
+A fresh new look:
+• Every glass is redrawn as real glass, with thick walls, a solid base, light on the rim and a shadow on the table
+• Drinks have depth, a softer cream top and bubbles you can see
+• You now pour from a steel jug that tips further as you pour
+• Ripples spread where the stream lands, and soda fizzes
+• A new app icon: iced milk tea with tapioca pearls
 ```
 
 ## Vietnamese
@@ -179,10 +187,15 @@ Không tài khoản. Không quảng cáo. Không theo dõi. Không bán gì thê
 rót nước,canh giờ,phản xạ,chính xác,trà sữa,rot nuoc,canh gio,phan xa,game ngắn,một chạm,ly,bọt
 ```
 
-**What's New in This Version**
+**What's New in This Version** (bản 1.0.1)
 
 ```
-Phiên bản đầu tiên.
+Giao diện mới:
+• Mọi chiếc ly được vẽ lại như thủy tinh thật: thành ly dày, đế đặc, ánh sáng trên miệng ly và bóng đổ trên bàn
+• Nước có khối, lớp kem mềm hơn, thấy rõ bọt
+• Rót từ một chiếc ca inox, càng rót ca càng nghiêng
+• Mặt nước gợn sóng chỗ dòng nước rơi xuống, nước ngọt có bọt khí nổi lên
+• Biểu tượng app mới: ly trà sữa trân châu
 ```
 
 ## Ảnh chụp màn hình
@@ -211,5 +224,5 @@ python tool/make_store_shots.py
 **Test Information > What to Test** (hiện cho người thử):
 
 ```
-Pour a few glasses in Keep pouring mode and see whether the difficulty feels right: the margin shrinks every glass and the stream starts to waver from the seventh. Try cream milk tea and smoothie, which both trail the most after you let go. Check that vibration and sound feel right, and that switching them off in Settings works.
+Version 1.0.1 redraws the glasses and the jug and has a new app icon. Check that the icon looks clear on the home screen and that pouring stays smooth, with no stutter. Pour a few glasses in Keep pouring mode and see whether the difficulty feels right: the margin shrinks every glass and the stream starts to waver from the seventh. Try cream milk tea and smoothie, which both trail the most after you let go. Check that vibration and sound feel right, and that switching them off in Settings works.
 ```
